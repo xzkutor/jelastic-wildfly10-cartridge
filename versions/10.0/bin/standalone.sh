@@ -313,7 +313,7 @@ while true; do
          org.jboss.as.standalone \
          -Djboss.home.dir=\""$JBOSS_HOME"\" \
          -Djboss.server.base.dir=\""$JBOSS_BASE_DIR"\" \
-         "$SERVER_OPTS"
+         -c $WILDFLY_XML_CONFIG "$SERVER_OPTS"
       JBOSS_STATUS=$?
    else
       # Execute the JVM in the background
@@ -326,7 +326,7 @@ while true; do
          org.jboss.as.standalone \
          -Djboss.home.dir=\""$JBOSS_HOME"\" \
          -Djboss.server.base.dir=\""$JBOSS_BASE_DIR"\" \
-         "$SERVER_OPTS" "&"
+         -c $WILDFLY_XML_CONFIG "$SERVER_OPTS" "&"
       JBOSS_PID=$!
       # Trap common signals and relay them to the jboss process
       trap "kill -HUP  $JBOSS_PID" HUP

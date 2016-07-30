@@ -43,6 +43,8 @@
                     <properties path="mgmt-groups.properties" relative-to="jboss.server.config.dir"/>
                 </authorization>
             </security-realm>
+rkmanager>
+
             <security-realm name="ApplicationRealm">
                 <authentication>
                     <local default-user="$local" allowed-users="*" skip-group-loading="true"/>
@@ -67,9 +69,12 @@
             </logger>
         </audit-log>
         <management-interfaces>
-            <http-interface security-realm="ManagementRealm" http-upgrade-enabled="true">
-                <socket-binding http="management-http"/>
-            </http-interface>
+		<native-interface security-realm="ManagementRealm">
+                	<socket-binding native="management-native"/>
+            	</native-interface>
+            	<http-interface security-realm="ManagementRealm" http-upgrade-enabled="true">
+                	<socket-binding http="management-http" https="management-https"/>
+            	</http-interface>
         </management-interfaces>
         <access-control provider="simple">
             <role-mapping>
