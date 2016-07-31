@@ -38,3 +38,5 @@ fi
 [ -f "${OPENSHIFT_WILDFLY10_DIR}/.bash_profile" ] && cp ${OPENSHIFT_WILDFLY10_DIR}/.bash_profile ${OPENSHIFT_WILDFLY10_DIR}/home/ ;
 [ -f "${OPENSHIFT_WILDFLY10_DIR}/.bash_history" ] && cp ${OPENSHIFT_WILDFLY10_DIR}/.bash_history ${OPENSHIFT_WILDFLY10_DIR}/home/ ;
 [ -f "${OPENSHIFT_WILDFLY10_DIR}/.profile" ] && cp ${OPENSHIFT_WILDFLY10_DIR}/.profile ${OPENSHIFT_WILDFLY10_DIR}/home/ ;
+
+yum -y install libaio &>/dev/null;
