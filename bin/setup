@@ -18,15 +18,19 @@ if [ ! -e ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuratio
 then
 cd /usr/java/latest/bin;
 keypass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`;
+appkeypass=`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`;
 ./keytool -genkeypair -alias serverkey -keyalg RSA -keysize 2048 -validity 7360 -keystore server.keystore -keypass $keypass -storepass $keypass -dname "cn=Server Administrator,o=Acme,c=GB";
+./keytool -genkeypair -alias server -keyalg RSA -keysize 2048 -validity 7360 -keystore application.keystore -keypass $appkeypass -storepass $appkeypass -dname "cn=Server Administrator,o=Acme,c=GB";
 mv /usr/java/latest/bin/server.keystore ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/;
-chown jelastic:jelastic ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/server.keystore;
+mv /usr/java/latest/bin/application.keystore ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/;
+chown jelastic:jelastic ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/*.keystore;
 
 XML_CONFIG_FILES=("standalone.xml" "standalone-full.xml" "standalone-ha.xml" "standalone-full-ha.xml")
 
 for file in "${XML_CONFIG_FILES[@]}"
 do
     sed -i s/theremustbethesslcertpass/$keypass/ ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/${file};
+    sed -i s/theremustbetheappcertpass/$appkeypass/ ${OPENSHIFT_WILDFLY10_DIR}/versions/${Version}/standalone/configuration/${file};
 done
 
 fi
